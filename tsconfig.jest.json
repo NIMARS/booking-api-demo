@@ -1,0 +1,19 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+  
+      // Ключевая правка: выключаем строгий ESM-режим для трансформа в тестах
+      "verbatimModuleSyntax": false,
+  
+      // ts-jest не любит isolatedModules
+      "isolatedModules": false,
+  
+      // на всякий случай
+      "allowJs": true,
+      "noEmit": true
+    },
+    "include": ["src", "tests", "src/types"]
+  }
+  

@@ -1,0 +1,25 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 10
+      arrivalRate: 200
+  defaults:
+    headers:
+      content-type: application/json
+scenarios:
+  - name: Reserve burst
+    flow:
+      - function: gen
+      - post:
+          url: "/api/bookings/reserve"
+          json:
+            event_id: 9999
+            user_id: "{{ userId }}"
+plugins:
+  expect: {}
+functions:
+  gen: |
+    function (userContext, events, done) {
+      userContext.vars.userId = 'u' + Math.floor(Math.random() * 1000000);
+      return done();
+    }

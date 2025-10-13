@@ -1,0 +1,55 @@
+Система бронирования мест.
+
+Реализовать API для бронирования места на мероприятие. Один пользователь не может забронировать дважды на одно событие.
+
+POST /api/bookings/reserve
+
+{
+"event_id": 1,
+"user_id": "user123"
+}
+
+
+Таблица events:
+
+- id (SERIAL PRIMARY KEY)
+- name (VARCHAR)
+- total_seats (INT)
+
+Таблица bookings:
+
+- id (SERIAL PRIMARY KEY)
+- event_id (INT, ссылка на events)
+- user_id (VARCHAR)
+- created_at (TIMESTAMP)
+
+----------------------------------------------------------------------------------------------------
+
+booking process:
+created       - 201
+not found     - 404
+sold_out/mine - 409
+wrong data    - 422
+ddos          - 429
+
+availiable by id:
+yes   - 200
+other - 404
+
+create  /  delete
+ok-201  /  not found 404
+
+db codes:
+  '23505': 'Duplicate key value',
+  '23503': 'Foreign key violation', (Foreign key not found/reach) -_-
+  '23502': 'Not-null violation',
+  '40001': 'Transaction serialization conflict',
+  '22P02': 'Invalid data format',
+
+----------------------------------------------------------------------------------------------------
+
+npx artillery run bookingarmy.yml
+
+nodeJS/postgreSQL/TS/zod/fastify
+
+RabbitMQ for cache in idempotence?
