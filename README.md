@@ -209,7 +209,7 @@ npm test
 Пример профиля см. в проекте; запуск:
 
 ```bash
-npx artillery run bookingarmy.yml
+npx artillery run -e local --output report.json bookingarmy.yml
 ```
 
 ---
