@@ -6,6 +6,7 @@ yarn-error.log*
 pnpm-debug.log*
 package-lock.json.LOCK
 
+
 # --- Build output ---
 dist/
 build/
@@ -50,3 +51,6 @@ test-results/
 # --- Docker ---
 docker-data/
 pgdata/
+
+# -- my todo --
+todo/
