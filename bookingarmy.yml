@@ -1,34 +1,47 @@
 config:
+  processor: "./artillery.processor.mjs"
+
+  # switcher to local/docker: npx artillery run -e local bookingarmy.yml
+  environments:
+    local:
+      target: "http://127.0.0.1:3000"
+    docker:
+      target: "http://host.docker.internal:3000"
   target: "http://127.0.0.1:3000"
   phases:
-    - duration: 10
-      arrivalRate: 200
+    - name: warmup
+      duration: 3
+      arrivalRate: 50
+    - name: burst
+      duration: 10
+      arrivalRate: 400
   defaults:
     headers:
       content-type: application/json
+  plugins:
+    expect: {}
+    ensure:
+      thresholds:
+        http.codes.5xx: 0
+        vusers.failed: 0
+        http.response_time.p95: 50
+        http.response_time.p99: 150
 
 scenarios:
   - name: Reserve burst
     flow:
       - get:
           url: "/ready"
+          tags: { endpoint: ready }
           expect:
             - statusCode: 200
 
-      - function: gen
       - post:
           url: "/api/bookings/reserve"
+          tags: { endpoint: reserve }
           json:
-            event_id: 9999
-            user_id: "{{ userId }}"
-
-plugins:
-  expect: {}
-
-functions:
-  gen: |
-    function (userContext, events, done) {
-      // уникальный user_id для каждой попытки, чтобы не ловить already_booked
-      userContext.vars.userId = 'u-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8);
-      return done();
-    }
+            event_id: { { $env.EVENT_ID || 9999 } }
+            user_id: "vu-{{ $uuid }}"
+          capture:
+            - json: "$.error"
+              as: error
