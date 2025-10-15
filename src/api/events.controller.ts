@@ -25,7 +25,7 @@ export async function registerEventsRoutes(app: FastifyInstance) {
       const { id } = Params.parse(req.params);
       const data = await withT((count) => getEventAvailiability(count, id));
       if (!data) throw new AppError("event_not_found", 404);
-      rep.send(data);
+      return rep.send(data);
     }
   );
 }

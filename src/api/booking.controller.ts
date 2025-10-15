@@ -29,7 +29,7 @@ export async function registerBookingRoutes(app: FastifyInstance) {
       const result = await withT((count) =>
         reserveSeat(count, body.event_id, body.user_id)
       );
-      rep.code(201).send(result);
+      return rep.code(201).send(result);
     }
   );
 }
