@@ -179,7 +179,7 @@ curl http://localhost:3000/api/events/1/availability
 
 * `GET /health` → `200 {"status":"ok"}`
 * `GET /ready` → `200 {"status":"ready"}` (или `503 {"status":"not_ready","reason":"db"}` при недоступной БД)
-* `GET /api/stitstics/:period` →
+* `GET /api/stitstics/:period` (период между 1-31 днями)→
 
 ```json
 {
@@ -200,6 +200,7 @@ curl http://localhost:3000/api/events/1/availability
             }
         },
         ...
+    ]
 }
 ```
 
