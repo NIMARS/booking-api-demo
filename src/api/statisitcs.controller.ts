@@ -3,7 +3,7 @@ import type { FastifyInstance } from "fastify";
 import { getStatistics } from "../statisitcs/statistics.js";
 
 export async function registerStatisticsRoute(app: FastifyInstance) {
-  app.get("/api/statstics/:period", async (req, rep) => {
+  app.get("/api/statistics/:period", async (req, rep) => {
     const raw = (req.params as any)?.period;
     let daysOfStat = Number(raw);
     if (daysOfStat <= 0 || daysOfStat > 31) daysOfStat = 7;
